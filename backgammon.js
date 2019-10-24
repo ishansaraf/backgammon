@@ -142,6 +142,40 @@ var mat2 = mat4(1.0, 0.0, 0.0, 5,
     0.0, 1.0, 0.0, -18,
     0.0, 0.0, 1.0, 0,
     0.0, 0.0, 0.0, 1.0);
+//0->white 1->black
+var columntl1=[0,0,0];
+var columntl2=[0,1];
+var columntl3=[];
+var columntl4=[];
+var columntl5=[1,1,1];
+var columntl6=[];
+
+var columntr1=[1,0,1,0,1];
+var columntr2=[];
+var columntr3=[];
+var columntr4=[];
+var columntr5=[];
+var columntr6=[0,0];
+
+var columnbl1=[1,1,1,1,1];
+var columnbl2=[];
+var columnbl3=[];
+var columnbl4=[];
+var columnbl5=[0,1,0];
+var columnbl6=[];
+
+var columnbr1=[0,0,0,0,0];
+var columnbr2=[];
+var columnbr3=[];
+var columnbr4=[];
+var columnbr5=[];
+var columnbr6=[1,1];
+
+var columns = [columntl1,columntl2,columntl3,columntl4,columntl5,columntl6,
+  columntr1,columntr2,columntr3,columntr4,columntr5,columntr6,
+  columnbl1,columnbl2,columnbl3,columnbl4,columnbl5,columnbl6,
+  columnbr1,columnbr2,columnbr3,columnbr4,columnbr5,columnbr6];
+
 
 window.onload = function init() {
   canvas = document.getElementById("gl-canvas");
@@ -264,7 +298,13 @@ function draw(){
     gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
   }
 
-  for (var i = 60; i < 70; i++) {
+  gl.uniform4fv(colorLoc, colors[4]);
+  for (var i = 68; i < 98; i++) {
+    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+  }
+
+  gl.uniform4fv(colorLoc, colors[5]);
+  for (var i = 98; i < 128; i++) {
     gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
   }
 
@@ -283,6 +323,7 @@ function createPoints(){
     }
 
   }
+
 
 
   verticesTest.push(vec4(16.125, 3, -26, 1));//79
@@ -305,4 +346,170 @@ function createPoints(){
   verticesTest.push(  vec4(16.125, 3, 0, 1));//93
   verticesTest.push(  vec4(15.875, 3, 0, 1));//94
 
+
+  for (i = 0; i < 24; i++) {
+    if (i < 6) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==0) {
+          verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + j * 1.5), 1));
+          verticesTest.push(vec4(i * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4(i * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+
+      }
+    } else if (5 < i && 12 > i) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==0) {
+          verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + j * 1.5), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+      }
+    }else if (11 < i && 18 > i) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==0) {
+          verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+      }
+    }else{
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==0) {
+          verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+
+
+      }
+    }
+  }
+
+  for (i = 0; i < 24; i++) {
+    if (i < 6) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==1) {
+          verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + j * 1.5), 1));
+          verticesTest.push(vec4(i * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4(i * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+
+      }
+    } else if (5 < i && 12 > i) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==1) {
+          verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + j * 1.5), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
+          verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+      }
+    }else if (11 < i && 18 > i) {
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==1) {
+          verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+      }
+    }else{
+      for (var j = 0; j < columns[i].length; j++) {
+        if(columns[i][j]==1) {
+          verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
+          verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - (j + 1) * 1.5), 1));
+
+          currentPosition = verticesTest.length;
+
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+          index.push(currentPosition - 4);
+
+          index.push(currentPosition - 1);
+          index.push(currentPosition - 2);
+          index.push(currentPosition - 3);
+        }
+
+
+      }
+    }
+  }
 }
