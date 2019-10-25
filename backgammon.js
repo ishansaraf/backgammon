@@ -1,5 +1,6 @@
-
-
+var canvas;
+var gl;
+var aspectRatio = 1.0;
 
 var num1 = 9.8;
 var num2 = num1 / 1.75;
@@ -126,12 +127,12 @@ var verticesTest = [
 ];
 var colors = [
   vec4(0.5976, 0.2968, 0, 1.0),
-  vec4(128 / 255, 128 / 255, 128 / 255, 1.0),
+  vec4(0.5, 0.5, 0.5, 1.0),
   vec4(0, 0, 0, 1),
   vec4(1, 1, 1, 1),
-  vec4(193 / 255, 154 / 255, 107 / 255, 1),
-  vec4(52/255, 53/255, 46/255, 1),
-  vec4(133/255, 21/255, 20/255, 1),
+  vec4(0.76, 0.60, 0.42, 1),
+  vec4(0.20, 0.20, 0.18, 1),
+  vec4(0.52, 0.08, 0.08, 1),
 ];
 var  mat1 = mat4(1.0, 0.0, 0.0, -16,
     0.0, 1.0, 0.0, -1.5,
@@ -143,7 +144,8 @@ var mat2 = mat4(1.0, 0.0, 0.0, 5,
     0.0, 0.0, 1.0, 0,
     0.0, 0.0, 0.0, 1.0);
 
-//0->white 1->black
+// 0->white
+// 1->black
 var columntl1=[0,0,0,0,0];
 var columntl2=[];
 var columntl3=[];
@@ -185,11 +187,12 @@ window.onload = function init() {
   if (!gl) {
     alert("WebGL isn't available");
   }
+
   //
   //  Configure WebGL
   //
   gl.viewport(0, 0, canvas.width, canvas.height);
-  aspect = canvas.width / canvas.height;
+  aspectRatio = canvas.width / canvas.height;
   gl.clearColor(1, 1, 1, 1.0);
   gl.enable(gl.DEPTH_TEST);
   createPoints();
@@ -198,7 +201,7 @@ window.onload = function init() {
     if(!start) {
       start = true;
       document.getElementById("play").innerHTML="Stop The Game"
-    }else{
+    } else {
       document.getElementById("play").innerHTML="Start The Game"
       start = false;
     }
@@ -223,6 +226,11 @@ window.onload = function init() {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(index), gl.STATIC_DRAW);
 
+  var die = new Die(vec2(0, 0));
+  die.roll();
+  alert(die.getValue());
+
+
   StartRender();
 };
 
@@ -244,21 +252,23 @@ function StartRender() {
   if(ready){
     colors = [
       vec4(0.5976, 0.2968, 0, 1.0),
-      vec4(128 / 255, 128 / 255, 128 / 255, 1.0),
+      vec4(0.5, 0.5, 0.5, 1.0),
       vec4(0, 0, 0, 1),
       vec4(1, 1, 1, 1),
-      vec4(193 / 255, 154 / 255, 107 / 255, 1),
-      vec4(52/255, 53/255, 46/255, 1),
-      vec4(133/255, 21/255, 20/255, 1)]
+      vec4(0.76, 0.60, 0.42, 1),
+      vec4(0.20, 0.20, 0.18, 1),
+      vec4(0.52, 0.08, 0.08, 1),
+    ];
   }else{
     colors = [
       vec4(0.3, 0.3, 0.3, 1.0),
-      vec4(128 / 255, 128 / 255, 128 / 255, 1.0),
+      vec4(0.5, 0.5, 0.5, 1.0),
       vec4(0, 0, 0, 1),
       vec4(1, 1, 1, 1),
       vec4(0.7, 0.7, 0.7, 1),
-      vec4(52/255, 53/255, 46/255, 1),
-      vec4(133/255, 21/255, 20/255, 1)]
+      vec4(0.20, 0.20, 0.18, 1),
+      vec4(0.52, 0.08, 0.08, 1)
+    ];
   }
   draw();
   requestAnimFrame(StartRender);
@@ -271,7 +281,7 @@ function ThreeDCalculation(){
       0.0, 0.0, 0.0, 1.0);
   angle = lookAt(vec3(num2 , num2, 3.5 * num1), vec3(num2,
       num2, 0), vec3(0.0, 1.0, 0.0));
-  projection = perspective(45.0, aspect, 1, 10 * num1);
+  projection = perspective(45.0, aspectRatio, 1, 10 * num1);
   modelView = mult(angle, mult(mat2, mult(mat, mat1)));
   gl.uniformMatrix4fv(modelViewLoc, false, flatten(modelView));
   gl.uniformMatrix4fv(projectionLoc, false, flatten(projection));
@@ -528,5 +538,31 @@ function createPoints() {
 
       }
     }
+  }
+}
+
+class Die {
+  constructor(topLeft) {
+    this.topLeft = vec2(topLeft[0] * aspectRatio, topLeft[1]);
+    this.topRight = vec2((topLeft[0] + SPACE_WIDTH) * aspectRatio, topLeft[1]);
+    this.botttomLeft = vec2(topLeft[0] * aspectRatio, -topLeft[1]);
+    this.bottomRight = vec2(
+      (topLeft[0] + SPACE_WIDTH) * aspectRatio,
+      -topLeft[1]
+    );
+
+    this.value = 1;
+  }
+
+  getVertices() {
+    return [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
+  }
+
+  roll() {
+    this.value = Math.floor(Math.random() * 6) + 1;
+  }
+
+  getValue() {
+    return this.value;
   }
 }

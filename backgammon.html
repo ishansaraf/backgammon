@@ -3,24 +3,24 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>Backgammon</title>
-      <style>
-          .test{
-              height:20px;
-              width:35px;
-          }
-      </style>
+    <style>
+      .test {
+        height: 20px;
+        width: 35px;
+      }
+    </style>
 
     <script id="vertex-shader" type="x-shader/x-vertex">
-attribute vec4 vPosition;
-uniform   mat4 modelView;
-uniform   mat4 projection;
+      attribute vec4 vPosition;
+      uniform   mat4 modelView;
+      uniform   mat4 projection;
 
-void
-main()
-{
-    gl_Position = projection * modelView * vPosition;
-}
-</script>
+      void
+      main()
+      {
+          gl_Position = projection * modelView * vPosition;
+      }
+    </script>
 
     <script id="fragment-shader" type="x-shader/x-fragment">
       precision mediump float;
@@ -36,62 +36,61 @@ main()
     <script type="text/javascript" src="./Common/MV.js"></script>
     <script type="text/javascript" src="backgammon.js"></script>
   </head>
-  <p>
-      <button id="play">Start The Game</button>
-  </p>
-
-  <table>
-      <td align="right" width="270">
-          <div>
-              <button class="test" id="colunmtl1">^</button>
-              <button class="test" id="colunmtl2">^</button>
-              <button class="test" id="colunmtl3">^</button>
-              <button class="test" id="colunmtl4">^</button>
-              <button class="test" id="colunmtl5">^</button>
-              <button class="test" id="colunmtl6">^</button>
-          </div>
-      </td>
-      <td width="30">
-      </td>
-      <td align="left" width="300">
-          <div>
-              <button class="test" id="colunmtr1" > ^ </button>
-              <button class="test" id="colunmtr2"> ^ </button>
-              <button class="test" id="colunmtr3"> ^ </button>
-              <button class="test" id="colunmtr4"> ^ </button>
-              <button class="test" id="colunmtr5"> ^ </button>
-              <button class="test" id="colunmtr6"> ^ </button>
-          </div>
-      </td>
-  </table>
   <body>
+    <p>
+      <button id="play">Start The Game</button>
+      <button id="dice">Roll Dice!</button>
+    </p>
+
+    <table>
+      <td align="right" width="270">
+        <div>
+          <button class="test" id="colunmtl1">^</button>
+          <button class="test" id="colunmtl2">^</button>
+          <button class="test" id="colunmtl3">^</button>
+          <button class="test" id="colunmtl4">^</button>
+          <button class="test" id="colunmtl5">^</button>
+          <button class="test" id="colunmtl6">^</button>
+        </div>
+      </td>
+      <td width="30"></td>
+      <td align="left" width="300">
+        <div>
+          <button class="test" id="colunmtr1">^</button>
+          <button class="test" id="colunmtr2">^</button>
+          <button class="test" id="colunmtr3">^</button>
+          <button class="test" id="colunmtr4">^</button>
+          <button class="test" id="colunmtr5">^</button>
+          <button class="test" id="colunmtr6">^</button>
+        </div>
+      </td>
+    </table>
     <canvas id="gl-canvas" width="600" height="600">
       Oops ... your browser doesn't support the HTML5 canvas element
     </canvas>
-  </body>
 
-  <table>
+    <table>
       <td align="right" width="270">
-          <div>
-              <button class="test" id="colunmtl1">^</button>
-              <button class="test" id="colunmtl2">^</button>
-              <button class="test" id="colunmtl3">^</button>
-              <button class="test" id="colunmtl4">^</button>
-              <button class="test" id="colunmtl5">^</button>
-              <button class="test" id="colunmtl6">^</button>
-          </div>
+        <div>
+          <button class="test" id="colunmtl1">^</button>
+          <button class="test" id="colunmtl2">^</button>
+          <button class="test" id="colunmtl3">^</button>
+          <button class="test" id="colunmtl4">^</button>
+          <button class="test" id="colunmtl5">^</button>
+          <button class="test" id="colunmtl6">^</button>
+        </div>
       </td>
-      <td width="30">
-      </td>
+      <td width="30"></td>
       <td align="left" width="300">
-          <div>
-              <button class="test" id="colunmtr1" > ^ </button>
-              <button class="test" id="colunmtr2"> ^ </button>
-              <button class="test" id="colunmtr3"> ^ </button>
-              <button class="test" id="colunmtr4"> ^ </button>
-              <button class="test" id="colunmtr5"> ^ </button>
-              <button class="test" id="colunmtr6"> ^ </button>
-          </div>
+        <div>
+          <button class="test" id="colunmtr1">^</button>
+          <button class="test" id="colunmtr2">^</button>
+          <button class="test" id="colunmtr3">^</button>
+          <button class="test" id="colunmtr4">^</button>
+          <button class="test" id="colunmtr5">^</button>
+          <button class="test" id="colunmtr6">^</button>
+        </div>
       </td>
-  </table>
+    </table>
+  </body>
 </html>
