@@ -1,6 +1,7 @@
 var canvas;
 var gl;
 var aspectRatio = 1.0;
+const SPACE_WIDTH = 50;
 
 var num1 = 9.8;
 var num2 = num1 / 1.75;
@@ -288,50 +289,60 @@ function ThreeDCalculation(){
 }
 
 function draw() {
-    gl.uniform4fv(colorLoc, colors[3]);
-    for (var i = 66; i < 68; i++) {
-      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-    }
 
+    //Middle Black Nodes
     gl.uniform4fv(colorLoc, colors[5]);
     for (var i = 62; i < 66; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
 
+    //middle white space
     gl.uniform4fv(colorLoc, colors[3]);
     for (var i = 60; i < 62; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
+    gl.uniform4fv(colorLoc, colors[3]);
+    for (var i = 66; i < 68; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
+    //inner wall and outer wall
     gl.uniform4fv(colorLoc, colors[1]);
     for (var i = 12; i < 36; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
 
-
+    //Top
     gl.uniform4fv(colorLoc, colors[4]);
     for (var i = 0; i < 10; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
 
+    //Base
     gl.uniform4fv(colorLoc, colors[0]);
     for (var i = 10; i < 12; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
+
+    //Red Triangle Column
     gl.uniform4fv(colorLoc, colors[6]);
     for (var i = 36; i < 48; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
+
+    //White Triangle Column
     gl.uniform4fv(colorLoc, colors[3]);
     for (var i = 48; i < 60; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
 
+    //Gray Chess
     gl.uniform4fv(colorLoc, colors[4]);
     for (var i = 68; i < 98; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
     }
 
+    //Black Chess
     gl.uniform4fv(colorLoc, colors[5]);
     for (var i = 98; i < 128; i++) {
       gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
@@ -339,6 +350,8 @@ function draw() {
 }
 
 function createPoints() {
+
+  //Create Triangle Column points
   for (i = 3; i < 60; i++) {
     if ((i % 2 != 0) && (i < 30)) {
       verticesTest.push(vec4(i, 0.01, -1, 1));
@@ -353,6 +366,7 @@ function createPoints() {
   }
 
 
+  //Create middle white space and black nodes points.
   verticesTest.push(vec4(16.125, 3.01, -26, 1));//79
   verticesTest.push(vec4(15.875, 3.01, 0, 1));//80
   verticesTest.push(vec4(16.125, 3.01, 0, 1));//81
@@ -374,6 +388,7 @@ function createPoints() {
   verticesTest.push(vec4(15.875, 3, 0, 1));//94
 
 
+  //Create White and Black chess points based on the columns.
   for (i = 0; i < 24; i++) {
     if (i < 6) {
       for (var j = 0; j < columns[i].length; j++) {
