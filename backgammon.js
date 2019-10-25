@@ -1,9 +1,9 @@
 
 
 
-var cubeSize = 10;
-var cubeSize2 = cubeSize / 2.0;
-var t=0;
+var num1 = 9.8;
+var num2 = num1 / 1.75;
+var t=30;
 var start=false;
 var ready=false;
 var index = [
@@ -142,15 +142,16 @@ var mat2 = mat4(1.0, 0.0, 0.0, 5,
     0.0, 1.0, 0.0, -18,
     0.0, 0.0, 1.0, 0,
     0.0, 0.0, 0.0, 1.0);
+
 //0->white 1->black
-var columntl1=[0,0,0];
-var columntl2=[0,1];
+var columntl1=[0,0,0,0,0];
+var columntl2=[];
 var columntl3=[];
 var columntl4=[];
 var columntl5=[1,1,1];
 var columntl6=[];
 
-var columntr1=[1,0,1,0,1];
+var columntr1=[1,1,1,1,1];
 var columntr2=[];
 var columntr3=[];
 var columntr4=[];
@@ -161,7 +162,7 @@ var columnbl1=[1,1,1,1,1];
 var columnbl2=[];
 var columnbl3=[];
 var columnbl4=[];
-var columnbl5=[0,1,0];
+var columnbl5=[0,0,0];
 var columnbl6=[];
 
 var columnbr1=[0,0,0,0,0];
@@ -228,17 +229,37 @@ window.onload = function init() {
 function StartRender() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  if(start && t!=90){
+  if(start && t!=75){
     t=t+0.5;
     ready=false;
-  }else if (!start && t!=0){
+  }else if (!start && t!=30){
     t=t-0.5;
     ready=false;
-  }else if(t==90){
+  }else if(t==75){
     ready=true;
   }
 
   ThreeDCalculation();
+
+  if(ready){
+    colors = [
+      vec4(0.5976, 0.2968, 0, 1.0),
+      vec4(128 / 255, 128 / 255, 128 / 255, 1.0),
+      vec4(0, 0, 0, 1),
+      vec4(1, 1, 1, 1),
+      vec4(193 / 255, 154 / 255, 107 / 255, 1),
+      vec4(52/255, 53/255, 46/255, 1),
+      vec4(133/255, 21/255, 20/255, 1)]
+  }else{
+    colors = [
+      vec4(0.3, 0.3, 0.3, 1.0),
+      vec4(128 / 255, 128 / 255, 128 / 255, 1.0),
+      vec4(0, 0, 0, 1),
+      vec4(1, 1, 1, 1),
+      vec4(0.7, 0.7, 0.7, 1),
+      vec4(52/255, 53/255, 46/255, 1),
+      vec4(133/255, 21/255, 20/255, 1)]
+  }
   draw();
   requestAnimFrame(StartRender);
 };
@@ -248,109 +269,105 @@ function ThreeDCalculation(){
       0.0, Math.cos(radians(t)), -Math.sin(radians(t)), 0.0,
       0.0, Math.sin(radians(t)), Math.cos(radians(t)), 0.0,
       0.0, 0.0, 0.0, 1.0);
-  angle = lookAt(vec3(cubeSize2, cubeSize2, 4 * cubeSize), vec3(cubeSize2,
-      cubeSize2, 0), vec3(0.0, 1.0, 0.0));
-  projection = perspective(45.0, aspect, 1, 10 * cubeSize);
+  angle = lookAt(vec3(num2 , num2, 3.5 * num1), vec3(num2,
+      num2, 0), vec3(0.0, 1.0, 0.0));
+  projection = perspective(45.0, aspect, 1, 10 * num1);
   modelView = mult(angle, mult(mat2, mult(mat, mat1)));
   gl.uniformMatrix4fv(modelViewLoc, false, flatten(modelView));
   gl.uniformMatrix4fv(projectionLoc, false, flatten(projection));
 }
 
-function draw(){
+function draw() {
+    gl.uniform4fv(colorLoc, colors[3]);
+    for (var i = 66; i < 68; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
-  gl.uniform4fv(colorLoc, colors[3]);
-  for (var i = 66; i <68; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[5]);
+    for (var i = 62; i < 66; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
-  gl.uniform4fv(colorLoc, colors[5]);
-  for (var i = 62; i <66; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[3]);
+    for (var i = 60; i < 62; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
-  gl.uniform4fv(colorLoc, colors[3]);
-  for (var i = 60; i <62; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
-
-  gl.uniform4fv(colorLoc, colors[1]);
-  for (var i = 12; i < 36; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
-
-
-  gl.uniform4fv(colorLoc, colors[4]);
-  for (var i = 0; i <10; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[1]);
+    for (var i = 12; i < 36; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
 
-  gl.uniform4fv(colorLoc, colors[0]);
-  for (var i = 10; i < 12; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
-  gl.uniform4fv(colorLoc, colors[6]);
-  for (var i = 36; i < 48; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
-  gl.uniform4fv(colorLoc, colors[3]);
-  for (var i = 48; i < 60; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[4]);
+    for (var i = 0; i < 10; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
-  gl.uniform4fv(colorLoc, colors[4]);
-  for (var i = 68; i < 98; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[0]);
+    for (var i = 10; i < 12; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
+    gl.uniform4fv(colorLoc, colors[6]);
+    for (var i = 36; i < 48; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
+    gl.uniform4fv(colorLoc, colors[3]);
+    for (var i = 48; i < 60; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
-  gl.uniform4fv(colorLoc, colors[5]);
-  for (var i = 98; i < 128; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+    gl.uniform4fv(colorLoc, colors[4]);
+    for (var i = 68; i < 98; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 
+    gl.uniform4fv(colorLoc, colors[5]);
+    for (var i = 98; i < 128; i++) {
+      gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+    }
 }
 
-function createPoints(){
+function createPoints() {
   for (i = 3; i < 60; i++) {
-    if((i % 2 != 0) &&  (i < 30)) {
+    if ((i % 2 != 0) && (i < 30)) {
       verticesTest.push(vec4(i, 0.01, -1, 1));
-    } else if( (i % 2 != 1) && (i < 30)) {
+    } else if ((i % 2 != 1) && (i < 30)) {
       verticesTest.push(vec4(i, 0.01, -9, 1));
-    }else if((i % 2 != 0) && (33 <= i)) {
-      verticesTest.push(vec4(i-30, 0.01, -25, 1));
-    }else if (33<=i){
-      verticesTest.push(vec4(i-30, 0.01, -17, 1));
+    } else if ((i % 2 != 0) && (33 <= i)) {
+      verticesTest.push(vec4(i - 30, 0.01, -25, 1));
+    } else if (33 <= i) {
+      verticesTest.push(vec4(i - 30, 0.01, -17, 1));
     }
 
   }
 
 
+  verticesTest.push(vec4(16.125, 3.01, -26, 1));//79
+  verticesTest.push(vec4(15.875, 3.01, 0, 1));//80
+  verticesTest.push(vec4(16.125, 3.01, 0, 1));//81
+  verticesTest.push(vec4(15.875, 3.01, -26, 1));//82
 
-  verticesTest.push(vec4(16.125, 3, -26, 1));//79
-  verticesTest.push(  vec4(15.875, 3, 0, 1));//80
-  verticesTest.push(  vec4(16.125, 3, 0, 1));//81
-  verticesTest.push(  vec4(15.875, 3, -26, 1));//82
+  verticesTest.push(vec4(16.25, 3.02, -4, 1));//83
+  verticesTest.push(vec4(15.75, 3.02, -3, 1));//84
+  verticesTest.push(vec4(16.25, 3.02, -3, 1));//85
+  verticesTest.push(vec4(15.75, 3.02, -4, 1));//86
 
-  verticesTest.push(  vec4(16.25, 3, -4, 1));//83
-  verticesTest.push(  vec4(15.75, 3, -3, 1));//84
-  verticesTest.push(  vec4(16.25, 3, -3, 1));//85
-  verticesTest.push(  vec4(15.75, 3, -4, 1));//86
+  verticesTest.push(vec4(16.25, 3.02, -23, 1));//87
+  verticesTest.push(vec4(15.75, 3.02, -22, 1));//88
+  verticesTest.push(vec4(16.25, 3.02, -22, 1));//89
+  verticesTest.push(vec4(15.75, 3.02, -23, 1));//90
 
-  verticesTest.push(  vec4(16.25, 3, -23, 1));//87
-  verticesTest.push(  vec4(15.75, 3, -22, 1));//88
-  verticesTest.push(  vec4(16.25, 3, -22, 1));//89
-  verticesTest.push(  vec4(15.75, 3, -23, 1));//90
-
-  verticesTest.push(  vec4(16.125, 0, 0, 1));//91
-  verticesTest.push(  vec4(15.875, 0, 0, 1));//92
-  verticesTest.push(  vec4(16.125, 3, 0, 1));//93
-  verticesTest.push(  vec4(15.875, 3, 0, 1));//94
+  verticesTest.push(vec4(16.125, 0, 0, 1));//91
+  verticesTest.push(vec4(15.875, 0, 0, 1));//92
+  verticesTest.push(vec4(16.125, 3, 0, 1));//93
+  verticesTest.push(vec4(15.875, 3, 0, 1));//94
 
 
   for (i = 0; i < 24; i++) {
     if (i < 6) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==0) {
+        if (columns[i][j] == 0) {
           verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + j * 1.5), 1));
           verticesTest.push(vec4(i * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
           verticesTest.push(vec4(i * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
@@ -370,7 +387,7 @@ function createPoints(){
       }
     } else if (5 < i && 12 > i) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==0) {
+        if (columns[i][j] == 0) {
           verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + j * 1.5), 1));
           verticesTest.push(vec4((i + 1) * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
           verticesTest.push(vec4((i + 1) * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
@@ -387,9 +404,9 @@ function createPoints(){
           index.push(currentPosition - 3);
         }
       }
-    }else if (11 < i && 18 > i) {
+    } else if (11 < i && 18 > i) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==0) {
+        if (columns[i][j] == 0) {
           verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
           verticesTest.push(vec4((i - 12) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
           verticesTest.push(vec4((i - 12) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
@@ -406,9 +423,9 @@ function createPoints(){
           index.push(currentPosition - 3);
         }
       }
-    }else{
+    } else {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==0) {
+        if (columns[i][j] == 0) {
           verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
           verticesTest.push(vec4((i - 11) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
           verticesTest.push(vec4((i - 11) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
@@ -433,7 +450,7 @@ function createPoints(){
   for (i = 0; i < 24; i++) {
     if (i < 6) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==1) {
+        if (columns[i][j] == 1) {
           verticesTest.push(vec4(i * 2 + 4, 0.015, (-25 + j * 1.5), 1));
           verticesTest.push(vec4(i * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
           verticesTest.push(vec4(i * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
@@ -453,7 +470,7 @@ function createPoints(){
       }
     } else if (5 < i && 12 > i) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==1) {
+        if (columns[i][j] == 1) {
           verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, (-25 + j * 1.5), 1));
           verticesTest.push(vec4((i + 1) * 2 + 3, 0.015, (-25 + j * 1.5 + 0.75), 1));
           verticesTest.push(vec4((i + 1) * 2 + 5, 0.015, (-25 + j * 1.5 + 0.75), 1));
@@ -470,9 +487,9 @@ function createPoints(){
           index.push(currentPosition - 3);
         }
       }
-    }else if (11 < i && 18 > i) {
+    } else if (11 < i && 18 > i) {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==1) {
+        if (columns[i][j] == 1) {
           verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
           verticesTest.push(vec4((i - 12) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
           verticesTest.push(vec4((i - 12) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
@@ -489,9 +506,9 @@ function createPoints(){
           index.push(currentPosition - 3);
         }
       }
-    }else{
+    } else {
       for (var j = 0; j < columns[i].length; j++) {
-        if(columns[i][j]==1) {
+        if (columns[i][j] == 1) {
           verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, (-1 - j * 1.5), 1));
           verticesTest.push(vec4((i - 11) * 2 + 3, 0.015, (-1 - j * 1.5 - 0.75), 1));
           verticesTest.push(vec4((i - 11) * 2 + 5, 0.015, (-1 - j * 1.5 - 0.75), 1));
