@@ -2,6 +2,10 @@ var canvas;
 var gl;
 var aspectRatio = 1.0;
 const SPACE_WIDTH = 50;
+const CIRCLE_POINTS = 20;
+const DIE_VAL_RADIUS = 0.01;
+var die1Val = 0;
+var die2Val = 0;
 
 var num1 = 9.8;
 var num2 = num1 / 1.75;
@@ -198,14 +202,21 @@ window.onload = function init() {
   gl.enable(gl.DEPTH_TEST);
   createPoints();
 
-  document.getElementById("play").onclick=function () {
+  document.getElementById("play").onclick = function () {
     if(!start) {
       start = true;
-      document.getElementById("play").innerHTML="Stop The Game"
+      document.getElementById("play").innerHTML = "Stop The Game"
     } else {
-      document.getElementById("play").innerHTML="Start The Game"
+      document.getElementById("play").innerHTML = "Start The Game"
       start = false;
     }
+  }
+
+  document.getElementById("roll").onclick = function() {
+    die1Val = rollDie();
+    document.getElementById("die1").innerHTML = die1Val;
+    die2Val = rollDie();
+    document.getElementById("die2").innerHTML = die2Val;
   }
 
   var program = initShaders(gl, "vertex-shader", "fragment-shader");
@@ -226,12 +237,7 @@ window.onload = function init() {
   iBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(index), gl.STATIC_DRAW);
-
-  var die = new Die(vec2(0, 0));
-  die.roll();
-  alert(die.getValue());
-
-
+  
   StartRender();
 };
 
@@ -556,28 +562,46 @@ function createPoints() {
   }
 }
 
-class Die {
-  constructor(topLeft) {
-    this.topLeft = vec2(topLeft[0] * aspectRatio, topLeft[1]);
-    this.topRight = vec2((topLeft[0] + SPACE_WIDTH) * aspectRatio, topLeft[1]);
-    this.botttomLeft = vec2(topLeft[0] * aspectRatio, -topLeft[1]);
-    this.bottomRight = vec2(
-      (topLeft[0] + SPACE_WIDTH) * aspectRatio,
-      -topLeft[1]
-    );
+// class Die {
+//   constructor(topLeft) {
+//     this.topLeft = vec2(topLeft[0] * aspectRatio, topLeft[1]);
+//     this.topRight = vec2((topLeft[0] + SPACE_WIDTH) * aspectRatio, topLeft[1]);
+//     this.botttomLeft = vec2(topLeft[0] * aspectRatio, -topLeft[1]);
+//     this.bottomRight = vec2(
+//       (topLeft[0] + SPACE_WIDTH) * aspectRatio,
+//       -topLeft[1]
+//     );
+//
+//     this.value = 1;
+//   }
+//
+//   getVertices() {
+//     return [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
+//   }
+//
+//   roll() {
+//     this.value = Math.floor(Math.random() * 6) + 1;
+//   }
+//
+//   getValue() {
+//     return this.value;
+//   }
+// }
 
-    this.value = 1;
-  }
+function rollDie() {
+  return Math.floor(Math.random() * 6) + 1;
+}
 
-  getVertices() {
-    return [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
-  }
 
-  roll() {
-    this.value = Math.floor(Math.random() * 6) + 1;
-  }
+// Helper for checkers / die values
+function drawCircle(center, radius) {
+  var theta = 0;
 
-  getValue() {
-    return this.value;
+  for (var i = 0; i < CIRCLE_POINTS; i++) {
+    point = vec2(
+      (radius * Math.cos(theta) + center[0]) * aspectRatio,
+       radius * Math.sin(theta) + center[1]);
+    circles[0].push(point);
+    theta += (2 * Math.PI) / CIRCLE_POINTS;
   }
 }
