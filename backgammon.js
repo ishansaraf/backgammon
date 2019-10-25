@@ -6,6 +6,7 @@ const CIRCLE_POINTS = 20;
 const DIE_VAL_RADIUS = 0.01;
 var die1Val = 0;
 var die2Val = 0;
+var isWhiteTurn = true;
 
 var num1 = 9.8;
 var num2 = num1 / 1.75;
@@ -202,6 +203,7 @@ window.onload = function init() {
   gl.enable(gl.DEPTH_TEST);
   createPoints();
 
+  // Sets up 3D movement to play mode
   document.getElementById("play").onclick = function () {
     if(!start) {
       start = true;
@@ -212,6 +214,7 @@ window.onload = function init() {
     }
   }
 
+  // Sets up die values
   document.getElementById("roll").onclick = function() {
     die1Val = rollDie();
     document.getElementById("die1").innerHTML = die1Val;
@@ -219,6 +222,11 @@ window.onload = function init() {
     document.getElementById("die2").innerHTML = die2Val;
   }
 
+  // Set's up whose turn it is first
+  isWhiteTurn = Math.random() >= Math.random() ? false : true;
+  changeTurn();
+
+  // WebGL Shader initialization
   var program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
@@ -237,7 +245,7 @@ window.onload = function init() {
   iBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(index), gl.STATIC_DRAW);
-  
+
   StartRender();
 };
 
@@ -603,5 +611,15 @@ function drawCircle(center, radius) {
        radius * Math.sin(theta) + center[1]);
     circles[0].push(point);
     theta += (2 * Math.PI) / CIRCLE_POINTS;
+  }
+}
+
+function changeTurn() {
+  if (isWhiteTurn) {
+    isWhiteTurn = false;
+    document.getElementById("turn").innerHTML = "Black's Turn";
+  } else {
+    isWhiteTurn = true;
+    document.getElementById("turn").innerHTML = "White's Turn";
   }
 }
