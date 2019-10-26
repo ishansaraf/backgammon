@@ -205,6 +205,12 @@ var columns = [
   columnbr5,
   columnbr6
 ];
+var columnIds = [
+  "columntl1", "columntl2", "columntl3", "columntl4", "columntl5", "columntl6",
+  "columntr1", "columntr2", "columntr3", "columntr4", "columntr5", "columntr6",
+  "columnbl1", "columnbl2", "columnbl3", "columnbl4", "columnbl5", "columnbl6",
+  "columnbr1", "columnbr2", "columnbr3", "columnbr4", "columnbr5", "columnbr6"];
+
 
 window.onload = function init() {
   canvas = document.getElementById("gl-canvas");
@@ -671,4 +677,14 @@ function movePiece(col1, col2) {
   }
 
   return false;
+}
+
+
+// Helpers to show and hide buttons to aid with checker movement
+function hideButton(colIndex) {
+  document.getElementById(columnIds[colIndex]).style.visibility = "hidden";
+}
+
+function showButton(colIndex) {
+  document.getElementById(columnIds[colIndex]).style.visibility = "visible";
 }
