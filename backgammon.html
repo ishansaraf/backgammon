@@ -12,8 +12,8 @@
 
     <script id="vertex-shader" type="x-shader/x-vertex">
       attribute vec4 vPosition;
-      uniform   mat4 modelView;
-      uniform   mat4 projection;
+      uniform mat4 modelView;
+      uniform mat4 projection;
 
       void
       main()
@@ -40,8 +40,18 @@
     <p>
       <button id="play">Start The Game</button>
       <button id="roll">Roll Dice!</button>
-      <button id="die1" style="width:100px;height:100px;background-color:#FFFFF0;font-weight:bold;font-size:25px">0</button>
-      <button id="die2" style="width:100px;height:100px;background-color:#FFFFF0;font-weight:bold;font-size:25px">0</button>
+      <button
+        id="die1"
+        style="width:100px;height:100px;background-color:#FFFFF0;font-weight:bold;font-size:25px"
+      >
+        0
+      </button>
+      <button
+        id="die2"
+        style="width:100px;height:100px;background-color:#FFFFF0;font-weight:bold;font-size:25px"
+      >
+        0
+      </button>
       <b id="turn">Rolling for turn...</b>
     </p>
 
