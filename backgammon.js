@@ -7,8 +7,10 @@ const DIE_VAL_RADIUS = 0.01;
 var die1Val = 0;
 var die2Val = 0;
 var isWhiteTurn = true;
-var program;
+var whiteEnded = [];
+var blackEnded = [];
 
+var program;
 var num1 = 9.8;
 var num2 = num1 / 1.75;
 var t = 30;
@@ -664,6 +666,8 @@ function drawCircle(center, radius) {
 }
 
 function changeTurn() {
+  checkGameEnd();
+
   if (isWhiteTurn) {
     isWhiteTurn = false;
     document.getElementById("turn").innerHTML = "Black's Turn";
@@ -683,6 +687,19 @@ function movePiece(col1, col2) {
   return false;
 }
 
+function getValidColumns(startIndex) {
+  const tl_start = 0;
+  const tr_start = 6;
+  const bl_start = 12;
+  const br_start = 18;
+  if (isWhiteTurn) {
+    // White moves counter-clockwise
+
+  } else {
+    // Black moves clockwise
+  }
+
+}
 
 // Helpers to show and hide buttons to aid with checker movement
 function hideButton(colIndex) {
@@ -691,4 +708,15 @@ function hideButton(colIndex) {
 
 function showButton(colIndex) {
   document.getElementById(columnIds[colIndex]).style.visibility = "visible";
+}
+
+function checkGameEnd() {
+  if (whiteEnded.length == 15) {
+    alert("White Wins!");
+    window.location.reload();
+    return;
+  } else if (blackEnded.length == 15) {
+    alert("Black Wins!");
+    window.location.reload();
+  }
 }
