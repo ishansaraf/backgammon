@@ -206,6 +206,12 @@ function draw() {
     gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
   }
 
+  //White Triangle Column
+  gl.uniform4fv(colorLoc, colors[5]);
+  for (var i = 60; i < 68; i++) {
+    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
+  }
+
   //Gray Chess
   gl.uniform4fv(colorLoc, colors[4]);
   for (var i = 68; i < 98; i++) {
@@ -218,7 +224,6 @@ function draw() {
     gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
   }
 }
-
 
 // Helper for checkers / die values
 function drawCircle(center, radius) {
