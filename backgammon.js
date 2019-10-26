@@ -1,9 +1,6 @@
 var canvas;
 var gl;
 var aspectRatio = 1.0;
-const SPACE_WIDTH = 50;
-const CIRCLE_POINTS = 20;
-const DIE_VAL_RADIUS = 0.01;
 var die1Val = 0;
 var die2Val = 0;
 var isWhiteTurn = true;
@@ -225,20 +222,6 @@ function draw() {
   }
 }
 
-// Helper for checkers / die values
-function drawCircle(center, radius) {
-  var theta = 0;
-
-  for (var i = 0; i < CIRCLE_POINTS; i++) {
-    point = vec2(
-      (radius * Math.cos(theta) + center[0]) * aspectRatio,
-      radius * Math.sin(theta) + center[1]
-    );
-    circles[0].push(point);
-    theta += (2 * Math.PI) / CIRCLE_POINTS;
-  }
-}
-
 function changeTurn() {
   checkGameEnd();
 
@@ -261,25 +244,81 @@ function movePiece(col1, col2) {
   return false;
 }
 
-function getValidColumns(startIndex) {
+// This function returns the indices of columns that can be moved
+// to, given a starting column index. It does not check if these
+// moves are valid.
+function getColumnsToMove(startIndex) {
   const tl_start = 0;
   const tr_start = 6;
   const bl_start = 12;
   const br_start = 18;
+  var validIndices = [];
+
   if (isWhiteTurn) {
     // White moves counter-clockwise
 
+    // Piece starts in bottom-right
+    if (startIndex >= br_start) {
+      if ((startIndex + die1Val) < 24) {
+        validIndices.push(startIndex + die1Val);
+      }
+      if ((startIndex + die2Val) < 24) {
+        validIndices.push(startIndex + die2Val);
+      }
+    }
+    // Piece starts in bottom-left
+    else if (startIndex < br_start && startIndex >= bl_start) {
+      validIndices.push(startIndex + die1Val);
+      validIndices.push(startIndex + die2Val);
+    }
+    // Piece starts in top-left
+    else if (startIndex < tr_start && startIndex >= tl_start) {
+      validIndices.push((die1Val - 1) + bl_start);
+      validIndices.push((die2Val - 1) + bl_start);
+    }
+    // Piece starts in top-right
+    else if (startIndex < bl_start && startIndex >= tr_start) {
+      validIndices.push(startIndex - die1Val);
+      validIndices.push(startIndex - die2Val);
+    }
   } else {
     // Black moves clockwise
+
+    // Piece starts in bottom-right
+    if (startIndex >= br_start) {
+      validIndices.push[startIndex - die1Val];
+      validIndices.push[startIndex - die2Val];
+    }
+    // Piece starts in bottom-left
+    else if (startIndex < br_start && startIndex >= bl_start) {
+      validIndices.push[die1Val - 1];
+      validIndices.push[die2Val - 1];
+    }
+    // Piece starts in top-left
+    else if (startIndex < tr_start && startIndex >= tl_start) {
+      validIndices.push(startIndex + die1Val);
+      validIndices.push(startIndex + die2Val);
+    }
+    // Piece starts in top-right
+    else if (startIndex < bl_start && startIndex >= tr_start) {
+      if ((startIndex + die1Val) < 12) {
+        validIndices.push(startIndex + die1Val);
+      }
+      if ((startIndex + die2Val) < 12) {
+        validIndices.push(startIndex + die2Val);
+      }
+    }
   }
 
+  return validIndices;
 }
 
 function hiddenAllButtons(){
-  for(var i=0; i<columnIds.length;i++){
+  for(var i=0; i<columnIds.length; i++){
     hideButton(i);
   }
 }
+
 // Helpers to show and hide buttons to aid with checker movement
 function hideButton(colIndex) {
   document.getElementById(columnIds[colIndex]).disabled = true;
@@ -288,4 +327,3 @@ function hideButton(colIndex) {
 function showButton(colIndex) {
   document.getElementById(columnIds[colIndex]).disabled = false;
 }
-
