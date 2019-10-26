@@ -822,10 +822,15 @@ function changeTurn() {
   }
 }
 
+// Moves a piece from column 1 to column 2
+// true if move was successful, false otherwise
 function movePiece(col1, col2) {
   const piece = col1.pop();
 
   if (piece) {
     col2.push(piece);
+    return true;
   }
+
+  return false;
 }
