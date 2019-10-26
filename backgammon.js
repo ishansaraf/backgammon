@@ -7,129 +7,15 @@ const DIE_VAL_RADIUS = 0.01;
 var die1Val = 0;
 var die2Val = 0;
 var isWhiteTurn = true;
+var program;
 
 var num1 = 9.8;
 var num2 = num1 / 1.75;
 var t = 30;
 var start = false;
 var ready = false;
-var index = [
-
-  15, 12, 11,
-  8, 4, 10,
-  14, 8, 7,
-  13, 3, 10,
-  13, 14, 3,
-  8, 14, 9,
-  9, 10, 8,
-  11, 16, 15,
-  4, 10, 3,
-  3, 14, 7,
-
-  1, 6, 2,
-  1, 6, 5,
-
-  1, 4, 3,
-  1, 3, 2,
-
-  11, 10, 18,
-  19, 11, 18,
-
-  13, 20, 12,
-  20, 21, 13,
-
-  8, 4, 1,
-  1, 5, 8,
-
-  18, 10, 9,
-  9, 17, 18,
-
-  7, 8, 5,
-  7, 5, 6,
-
-  24, 9, 16,
-  24, 17, 9,
-
-  15, 14, 22,
-  22, 23, 15,
-
-  2, 3, 7,
-  7, 6, 2,
-
-  14, 13, 21,
-  21, 22, 14,
-
-  15, 23, 12,
-  23, 20, 12,
-
-  16, 11, 19,
-  19, 24, 16,
-
-  47, 48, 49,
-  43, 44, 45,
-  39, 40, 41,
-  33, 34, 35,
-  29, 30, 31,
-  25, 26, 27,
-  54, 56, 55,
-  58, 60, 59,
-  62, 64, 63,
-  68, 70, 69,
-  72, 74, 73,
-  76, 78, 77,
-
-  49, 50, 51,
-  45, 46, 47,
-  41, 42, 43,
-  35, 36, 37,
-  31, 32, 33,
-  27, 28, 29,
-  52, 54, 53,
-  56, 58, 57,
-  60, 62, 61,
-  66, 68, 67,
-  70, 72, 71,
-  74, 76, 75,
-  81, 80, 79,
-  80, 79, 82,
-
-  83, 84, 85,
-  84, 83, 86,
-
-  87,88,89,
-  87,88,90,
-
-  91,92,93,
-  93,94,92
-];
-
-var verticesTest = [
-  vec4(0, 0, 0, 1), //0
-  vec4(2, 0, 0, 1), //1
-  vec4(30, 0, 0, 1), //2
-  vec4(32, 3, 0, 1), //3
-  vec4(0, 3, 0, 1), //4
-  vec4(2, 0, -26, 1), //5
-  vec4(30, 0, -26, 1), //6
-  vec4(32, 3, -26, 1), //7
-  vec4(0, 3, -26, 1), //8
-  vec4(3, 3, -25, 1), //9
-  vec4(3, 3, -1, 1), //10
-  vec4(15, 3, -1, 1), //11
-  vec4(17, 3, -1, 1), //12
-  vec4(29, 3, -1, 1), //13
-  vec4(29, 3, -25, 1), //14
-  vec4(17, 3, -25, 1), //15
-  vec4(15, 3, -25, 1), //16
-  vec4(1, 0, -25, 1), //17
-  vec4(1, 0, -1, 1), //18
-  vec4(15, 0, -1, 1), //19
-  vec4(17, 0, -1, 1), //20
-  vec4(31, 0, -1, 1), //21
-  vec4(31, 0, -25, 1), //22
-  vec4(17, 0, -25, 1), //23
-  vec4(15, 0, -25, 1) //24
-];
+var index = [];
+var verticesTest = [];
 var colors = [
   vec4(0.5976, 0.2968, 0, 1.0),
   vec4(0.5, 0.5, 0.5, 1.0),
@@ -253,7 +139,7 @@ window.onload = function init() {
   changeTurn();
 
   // WebGL Shader initialization
-  var program = initShaders(gl, "vertex-shader", "fragment-shader");
+  program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
   colorLoc = gl.getUniformLocation(program, "color");
@@ -343,14 +229,16 @@ function ThreeDCalculation() {
   modelView = mult(angle, mult(mat2, mult(mat, mat1)));
   gl.uniformMatrix4fv(modelViewLoc, false, flatten(modelView));
   gl.uniformMatrix4fv(projectionLoc, false, flatten(projection));
+
 }
 
 function draw() {
   //Middle Black Nodes
-  gl.uniform4fv(colorLoc, colors[5]);
-  for (var i = 62; i < 66; i++) {
-    gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
+  createPoints();
+  gl.bufferSubData (gl.ARRAY_BUFFER, 0, flatten(verticesTest));
+  gl.bufferSubData (gl.ELEMENT_ARRAY_BUFFER, 0, new Uint8Array(index));
+
+
 
   //middle white space
   gl.uniform4fv(colorLoc, colors[3]);
@@ -406,6 +294,121 @@ function draw() {
 }
 
 function createPoints() {
+  index=[
+    15, 12, 11,
+    8, 4, 10,
+    14, 8, 7,
+    13, 3, 10,
+    13, 14, 3,
+    8, 14, 9,
+    9, 10, 8,
+    11, 16, 15,
+    4, 10, 3,
+    3, 14, 7,
+
+    1, 6, 2,
+    1, 6, 5,
+
+    1, 4, 3,
+    1, 3, 2,
+
+    11, 10, 18,
+    19, 11, 18,
+
+    13, 20, 12,
+    20, 21, 13,
+
+    8, 4, 1,
+    1, 5, 8,
+
+    18, 10, 9,
+    9, 17, 18,
+
+    7, 8, 5,
+    7, 5, 6,
+
+    24, 9, 16,
+    24, 17, 9,
+
+    15, 14, 22,
+    22, 23, 15,
+
+    2, 3, 7,
+    7, 6, 2,
+
+    14, 13, 21,
+    21, 22, 14,
+
+    15, 23, 12,
+    23, 20, 12,
+
+    16, 11, 19,
+    19, 24, 16,
+
+    47, 48, 49,
+    43, 44, 45,
+    39, 40, 41,
+    33, 34, 35,
+    29, 30, 31,
+    25, 26, 27,
+    54, 56, 55,
+    58, 60, 59,
+    62, 64, 63,
+    68, 70, 69,
+    72, 74, 73,
+    76, 78, 77,
+
+    49, 50, 51,
+    45, 46, 47,
+    41, 42, 43,
+    35, 36, 37,
+    31, 32, 33,
+    27, 28, 29,
+    52, 54, 53,
+    56, 58, 57,
+    60, 62, 61,
+    66, 68, 67,
+    70, 72, 71,
+    74, 76, 75,
+    81, 80, 79,
+    80, 79, 82,
+
+    83, 84, 85,
+    84, 83, 86,
+
+    87,88,89,
+    87,88,90,
+
+    91,92,93,
+    93,94,92
+  ];
+  verticesTest= [vec4(0, 0, 0, 1), //0
+      vec4(2, 0, 0, 1), //1
+      vec4(30, 0, 0, 1), //2
+      vec4(32, 3, 0, 1), //3
+      vec4(0, 3, 0, 1), //4
+      vec4(2, 0, -26, 1), //5
+      vec4(30, 0, -26, 1), //6
+      vec4(32, 3, -26, 1), //7
+      vec4(0, 3, -26, 1), //8
+      vec4(3, 3, -25, 1), //9
+      vec4(3, 3, -1, 1), //10
+      vec4(15, 3, -1, 1), //11
+      vec4(17, 3, -1, 1), //12
+      vec4(29, 3, -1, 1), //13
+      vec4(29, 3, -25, 1), //14
+      vec4(17, 3, -25, 1), //15
+      vec4(15, 3, -25, 1), //16
+      vec4(1, 0, -25, 1), //17
+      vec4(1, 0, -1, 1), //18
+      vec4(15, 0, -1, 1), //19
+      vec4(17, 0, -1, 1), //20
+      vec4(31, 0, -1, 1), //21
+      vec4(31, 0, -25, 1), //22
+      vec4(17, 0, -25, 1), //23
+      vec4(15, 0, -25, 1) //24
+  ];
+
   //Create Triangle Column points
   for (i = 3; i < 60; i++) {
     if (i % 2 != 0 && i < 30) {
@@ -441,6 +444,10 @@ function createPoints() {
   verticesTest.push(vec4(15.875, 3, 0, 1)); //94
 
   //Create White and Black chess points based on the columns.
+  updateChess();
+}
+
+function updateChess(){
   for (i = 0; i < 24; i++) {
     if (i < 6) {
       for (var j = 0; j < columns[i].length; j++) {
@@ -466,13 +473,13 @@ function createPoints() {
         if (columns[i][j] == 0) {
           verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, -25 + j * 1.5, 1));
           verticesTest.push(
-            vec4((i + 1) * 2 + 3, 0.015, -25 + j * 1.5 + 0.75, 1)
+              vec4((i + 1) * 2 + 3, 0.015, -25 + j * 1.5 + 0.75, 1)
           );
           verticesTest.push(
-            vec4((i + 1) * 2 + 5, 0.015, -25 + j * 1.5 + 0.75, 1)
+              vec4((i + 1) * 2 + 5, 0.015, -25 + j * 1.5 + 0.75, 1)
           );
           verticesTest.push(
-            vec4((i + 1) * 2 + 4, 0.015, -25 + (j + 1) * 1.5, 1)
+              vec4((i + 1) * 2 + 4, 0.015, -25 + (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -491,13 +498,13 @@ function createPoints() {
         if (columns[i][j] == 0) {
           verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, -1 - j * 1.5, 1));
           verticesTest.push(
-            vec4((i - 12) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 12) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 12) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 12) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 12) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
+              vec4((i - 12) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -516,13 +523,13 @@ function createPoints() {
         if (columns[i][j] == 0) {
           verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, -1 - j * 1.5, 1));
           verticesTest.push(
-            vec4((i - 11) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 11) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 11) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 11) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 11) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
+              vec4((i - 11) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -564,13 +571,13 @@ function createPoints() {
         if (columns[i][j] == 1) {
           verticesTest.push(vec4((i + 1) * 2 + 4, 0.015, -25 + j * 1.5, 1));
           verticesTest.push(
-            vec4((i + 1) * 2 + 3, 0.015, -25 + j * 1.5 + 0.75, 1)
+              vec4((i + 1) * 2 + 3, 0.015, -25 + j * 1.5 + 0.75, 1)
           );
           verticesTest.push(
-            vec4((i + 1) * 2 + 5, 0.015, -25 + j * 1.5 + 0.75, 1)
+              vec4((i + 1) * 2 + 5, 0.015, -25 + j * 1.5 + 0.75, 1)
           );
           verticesTest.push(
-            vec4((i + 1) * 2 + 4, 0.015, -25 + (j + 1) * 1.5, 1)
+              vec4((i + 1) * 2 + 4, 0.015, -25 + (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -589,13 +596,13 @@ function createPoints() {
         if (columns[i][j] == 1) {
           verticesTest.push(vec4((i - 12) * 2 + 4, 0.015, -1 - j * 1.5, 1));
           verticesTest.push(
-            vec4((i - 12) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 12) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 12) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 12) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 12) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
+              vec4((i - 12) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -614,13 +621,13 @@ function createPoints() {
         if (columns[i][j] == 1) {
           verticesTest.push(vec4((i - 11) * 2 + 4, 0.015, -1 - j * 1.5, 1));
           verticesTest.push(
-            vec4((i - 11) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 11) * 2 + 3, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 11) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
+              vec4((i - 11) * 2 + 5, 0.015, -1 - j * 1.5 - 0.75, 1)
           );
           verticesTest.push(
-            vec4((i - 11) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
+              vec4((i - 11) * 2 + 4, 0.015, -1 - (j + 1) * 1.5, 1)
           );
 
           currentPosition = verticesTest.length;
@@ -669,12 +676,9 @@ function changeTurn() {
 // Moves a piece from column 1 to column 2
 // true if move was successful, false otherwise
 function movePiece(col1, col2) {
-  const piece = col1.pop();
-
-  if (piece) {
+  var piece = col1.pop();
     col2.push(piece);
     return true;
-  }
 
   return false;
 }
