@@ -56,6 +56,10 @@ window.onload = function init() {
   isWhiteTurn = Math.random() >= Math.random() ? false : true;
   changeTurn();
 
+  //Set up the game buttons
+  setupAllButtons();
+
+
   // WebGL Shader initialization
   program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
@@ -95,30 +99,14 @@ function StartRender() {
   if(!ready){
     hiddenAllButtons();
   }else{
-
+    showAllButtons();
   }
   ThreeDCalculation();
 
   if (ready) {
-    colors = [
-      vec4(0.5976, 0.2968, 0, 1.0),
-      vec4(0.5, 0.5, 0.5, 1.0),
-      vec4(0, 0, 0, 1),
-      vec4(1, 1, 1, 1),
-      vec4(0.76, 0.6, 0.42, 1),
-      vec4(0.2, 0.2, 0.18, 1),
-      vec4(0.52, 0.08, 0.08, 1)
-    ];
+    colors = readyColors;
   } else {
-    colors = [
-      vec4(0.3, 0.3, 0.3, 1.0),
-      vec4(0.5, 0.5, 0.5, 1.0),
-      vec4(0, 0, 0, 1),
-      vec4(1, 1, 1, 1),
-      vec4(0.7, 0.7, 0.7, 1),
-      vec4(0.2, 0.2, 0.18, 1),
-      vec4(0.52, 0.08, 0.08, 1)
-    ];
+    colors = notReadyColors;
   }
   draw();
   requestAnimFrame(StartRender);
@@ -234,92 +222,23 @@ function changeTurn() {
   }
 }
 
-// Moves a piece from column 1 to column 2
-// true if move was successful, false otherwise
-function movePiece(col1, col2) {
-  var piece = col1.pop();
-    col2.push(piece);
-    return true;
-
-  return false;
-}
-
-// This function returns the indices of columns that can be moved
-// to, given a starting column index. It does not check if these
-// moves are valid.
-function getColumnsToMove(startIndex) {
-  const tl_start = 0;
-  const tr_start = 6;
-  const bl_start = 12;
-  const br_start = 18;
-  var validIndices = [];
-
-  if (isWhiteTurn) {
-    // White moves counter-clockwise
-
-    // Piece starts in bottom-right
-    if (startIndex >= br_start) {
-      if ((startIndex + die1Val) < 24) {
-        validIndices.push(startIndex + die1Val);
-      }
-      if ((startIndex + die2Val) < 24) {
-        validIndices.push(startIndex + die2Val);
-      }
-    }
-    // Piece starts in bottom-left
-    else if (startIndex < br_start && startIndex >= bl_start) {
-      validIndices.push(startIndex + die1Val);
-      validIndices.push(startIndex + die2Val);
-    }
-    // Piece starts in top-left
-    else if (startIndex < tr_start && startIndex >= tl_start) {
-      validIndices.push((die1Val - 1) + bl_start);
-      validIndices.push((die2Val - 1) + bl_start);
-    }
-    // Piece starts in top-right
-    else if (startIndex < bl_start && startIndex >= tr_start) {
-      validIndices.push(startIndex - die1Val);
-      validIndices.push(startIndex - die2Val);
-    }
-  } else {
-    // Black moves clockwise
-
-    // Piece starts in bottom-right
-    if (startIndex >= br_start) {
-      validIndices.push[startIndex - die1Val];
-      validIndices.push[startIndex - die2Val];
-    }
-    // Piece starts in bottom-left
-    else if (startIndex < br_start && startIndex >= bl_start) {
-      validIndices.push[die1Val - 1];
-      validIndices.push[die2Val - 1];
-    }
-    // Piece starts in top-left
-    else if (startIndex < tr_start && startIndex >= tl_start) {
-      validIndices.push(startIndex + die1Val);
-      validIndices.push(startIndex + die2Val);
-    }
-    // Piece starts in top-right
-    else if (startIndex < bl_start && startIndex >= tr_start) {
-      if ((startIndex + die1Val) < 12) {
-        validIndices.push(startIndex + die1Val);
-      }
-      if ((startIndex + die2Val) < 12) {
-        validIndices.push(startIndex + die2Val);
-      }
-    }
-  }
-
-  return validIndices;
-}
-
+//Disabled all the buttons
 function hiddenAllButtons(){
   for(var i=0; i<columnIds.length; i++){
     hideButton(i);
   }
 }
 
-// Helpers to show and hide buttons to aid with checker movement
+//Enabled all the buttons
+function showAllButtons(){
+  var volidButton = voliMoveColumns();
+  for(var i=0; i<volidButton.length; i++){
+    showButton(volidButton[i]);
+  }
+}
+
+
+// Helpers to disabled or enabled buttons to aid with checker movement
 function hideButton(colIndex) {
   document.getElementById(columnIds[colIndex]).disabled = true;
 }
