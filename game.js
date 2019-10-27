@@ -130,6 +130,7 @@ function changeTurn() {
     }
 }
 
+//Move the chess
 function moveHelper(id){
     if(moveStep==1){
         movePiece(columns[id],columns[getColumnsToMove(id)[moveStep]]);

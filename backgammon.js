@@ -102,6 +102,7 @@ function StartRender() {
 
   ThreeDCalculation();
 
+  //Check if a buttons is available to show or not
   if (ready) {
     if(isMoved){
       document.getElementById("roll").disabled=false;
