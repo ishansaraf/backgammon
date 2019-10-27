@@ -18,10 +18,11 @@ function rollDie() {
 // true if move was successful, false otherwise
 function movePiece(col1, col2) {
     var piece = col1.pop();
+    if(piece!=null){
     col2.push(piece);
     return true;
-
-    return false;
+    }
+    return false
 }
 
 // This function returns the indices of columns that can be moved
@@ -98,10 +99,19 @@ function getColumnsToMove(startIndex) {
 function voliMoveColumns(){
     var result=[];
     for (var i=0;i<24;i++){
+        var checker = getColumnsToMove(i);
         if(columns[i].length > 0 && columns[i][0]==0 && isWhiteTurn){
-            result.push(i);
+            if(checker.length == 2) {
+                result.push(i);
+            }else if (moveStep==0){
+                result.push(i);
+            }
         }else if(columns[i].length > 0 && columns[i][0]==1 && !isWhiteTurn){
-            result.push(i);
+            if(checker.length == 2) {
+                result.push(i);
+            }else if (moveStep==0){
+                result.push(i);
+            }
         }
     }
     return result;
