@@ -4,7 +4,9 @@ var aspectRatio = 1.0;
 var die1Val = 0;
 var die2Val = 0;
 var isWhiteTurn = true;
-var isMoved = false;
+var isMoved = true;
+var moveStep=0;
+var isRolled = false;
 var whiteEnded = [];
 var blackEnded = [];
 
@@ -12,8 +14,8 @@ var program;
 var num1 = 9.8;
 var num2 = num1 / 1.75;
 var t = 30;
-var start = false;
-var ready = false;
+var start = false;//if start the game button click or not
+var ready = false;//if the game is ready to play
 
 
 window.onload = function init() {
@@ -50,14 +52,15 @@ window.onload = function init() {
     document.getElementById("die1").innerHTML = die1Val;
     die2Val = rollDie();
     document.getElementById("die2").innerHTML = die2Val;
+    isRolled=true;
+    changeTurn();
   };
 
   // Set's up whose turn it is first
   isWhiteTurn = Math.random() >= Math.random() ? false : true;
-  changeTurn();
 
-  //Set up the game buttons
-  setupAllButtons();
+  //Set up the game buttons(in game.js)
+  setupAllMoveButtons();
 
 
   // WebGL Shader initialization
@@ -94,19 +97,26 @@ function StartRender() {
     ready = false;
   } else if (t == 75) {
     ready = true;
+
   }
 
-  if(!ready){
-    hiddenAllButtons();
-  }else{
-    showAllButtons();
-  }
   ThreeDCalculation();
 
   if (ready) {
+    if(isMoved){
+      document.getElementById("roll").disabled=false;
+    }else{
+      document.getElementById("roll").disabled=true;
+    }
     colors = readyColors;
+    hiddenAllButtons();
+    if(isRolled){
+      showAllButtons();
+    }
   } else {
     colors = notReadyColors;
+    document.getElementById("roll").disabled=true;
+    hiddenAllButtons();
   }
   draw();
   requestAnimFrame(StartRender);
@@ -207,18 +217,6 @@ function draw() {
   gl.uniform4fv(colorLoc, colors[5]);
   for (var i = 98; i < 128; i++) {
     gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_BYTE, 3 * i);
-  }
-}
-
-function changeTurn() {
-  checkGameEnd();
-
-  if (isWhiteTurn) {
-    isWhiteTurn = false;
-    document.getElementById("turn").innerHTML = "Black's Turn";
-  } else {
-    isWhiteTurn = true;
-    document.getElementById("turn").innerHTML = "White's Turn";
   }
 }
 

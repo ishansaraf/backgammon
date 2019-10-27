@@ -10,7 +10,6 @@ var readyColors = [
     vec4(0.2, 0.2, 0.18, 1),
     vec4(0.52, 0.08, 0.08, 1)
 ];
-
 var notReadyColors = [
     vec4(0.3, 0.3, 0.3, 1.0),
     vec4(0.5, 0.5, 0.5, 1.0),
@@ -20,7 +19,6 @@ var notReadyColors = [
     vec4(0.2, 0.2, 0.18, 1),
     vec4(0.52, 0.08, 0.08, 1)
 ];
-
 var  mat1 = mat4(1.0, 0.0, 0.0, -16,
     0.0, 1.0, 0.0, -1.5,
     0.0, 0.0, 1.0, -13,
@@ -443,105 +441,4 @@ function updateChess(){
             }
         }
     }
-}
-
-function setupAllButtons(){
-    document.getElementById(columnIds[0]).onclick=function(){
-        var id = 0;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[1]).onclick=function(){
-        var id = 1;
-        console.log(id+" click");
-    };
-
-    document.getElementById(columnIds[2]).onclick=function(){
-        var id = 2;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[3]).onclick=function(){
-        var id = 3;
-        console.log(id+" click");
-    };
-
-    document.getElementById(columnIds[4]).onclick=function(){
-        var id = 4;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[5]).onclick=function(){
-        var id = 5;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[6]).onclick=function(){
-        var id = 6;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[7]).onclick=function(){
-        var id = 7;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[8]).onclick=function(){
-        var id = 8;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[9]).onclick=function(){
-        var id = 9;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[10]).onclick=function(){
-        var id = 10;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[11]).onclick=function(){
-        var id = 11;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[12]).onclick=function(){
-        var id = 12;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[13]).onclick=function(){
-        var id = 13;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[14]).onclick=function(){
-        var id = 14;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[15]).onclick=function(){
-        var id = 15;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[16]).onclick=function(){
-        var id = 16;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[17]).onclick=function(){
-        var id = 17;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[18]).onclick=function(){
-        var id = 18;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[19]).onclick=function(){
-        var id = 19;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[20]).onclick=function(){
-        var id = 20;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[21]).onclick=function(){
-        var id = 21;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[22]).onclick=function(){
-        var id = 22;
-        console.log(id+" click");
-    };
-    document.getElementById(columnIds[23]).onclick=function(){
-        var id = 23;
-        console.log(id+" click");
-    };
 }
