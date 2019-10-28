@@ -1,4 +1,3 @@
-
 function checkGameEnd() {
     if (whiteEnded.length == 15) {
         alert("White Wins!");
@@ -41,7 +40,7 @@ function getColumnsToMove(startIndex) {
         // Piece starts in bottom-right
         if (startIndex >= br_start) {
             if ((startIndex + die1Val) < 24) {
-                validIndices.push(startIndex + die1Val);
+                validIndices.push(startIndex + die1Val);                
             }
             if ((startIndex + die2Val) < 24) {
                 validIndices.push(startIndex + die2Val);
@@ -95,28 +94,67 @@ function getColumnsToMove(startIndex) {
 }
 
 //This is the function to check if the column contains chess that is able to
-// make a volid move and return the indes of the colums.
-function voliMoveColumns(){
+// make a valid move and return the indes of the colums.
+function validMoveColumns(){
     var result=[];
     for (var i=0;i<24;i++){
         var checker = getColumnsToMove(i);
         if(columns[i].length > 0 && columns[i][0]==0 && isWhiteTurn){
-            if(checker.length == 2) {
-                result.push(i);
-            }else if (moveStep==0){
-                result.push(i);
+//            if(checker.length == 2) {
+//                var checkCol1 = checker[0];
+//                if (columns[checkCol1].length==0||columns[checkCol1][0]==0){
+//                    result.push(i);
+//                }
+//            }else if (moveStep==0){
+//                
+//                    result.push(i);
+//                
+//            }
+            if (checker.length>0){
+                if(moveStep == 0) {
+                var checkCol = checker[0];
+                if (columns[checkCol].length==0||columns[checkCol][0]==0){
+                    result.push(i);
+                }}}
+            if (checker.length==2){
+                if (moveStep == 1){
+                    var checkCol = checker[1];
+                    if (columns[checkCol].length==0||columns[checkCol][0]==0){
+                        result.push(i);
+                    }
+                }
             }
+            
+                
         }else if(columns[i].length > 0 && columns[i][0]==1 && !isWhiteTurn){
-            if(checker.length == 2) {
-                result.push(i);
-            }else if (moveStep==0){
-                result.push(i);
+//            if(checker.length == 2) {
+//                var checkCol1 = checker[0];
+//                if (columns[checkCol1].length==0||columns[checkCol1][0]==1){
+//                    result.push(i);
+//                }
+//                
+//            }else if (moveStep==0){
+//                
+//                result.push(i);
+//            }
+            if (checker.length>0){
+                if(moveStep == 0) {
+                var checkCol = checker[0];
+                if (columns[checkCol].length==0||columns[checkCol][0]==1){
+                    result.push(i);
+                }}}
+            if (checker.length==2){
+                if (moveStep == 1){
+                    var checkCol = checker[1];
+                    if (columns[checkCol].length==0||columns[checkCol][0]==1){
+                        result.push(i);
+                    }
+                }
             }
         }
     }
     return result;
 }
-
 
 function changeTurn() {
     checkGameEnd();

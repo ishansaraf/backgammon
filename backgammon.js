@@ -230,9 +230,9 @@ function hiddenAllButtons(){
 
 //Enabled all the buttons
 function showAllButtons(){
-  var volidButton = voliMoveColumns();
-  for(var i=0; i<volidButton.length; i++){
-    showButton(volidButton[i]);
+  var validButton = validMoveColumns();
+  for(var i=0; i<validButton.length; i++){
+    showButton(validButton[i]);
   }
 }
 
