@@ -1,3 +1,5 @@
+// @authors: Ishan Saraf, Tianxi He, Xiaoxiao Wang
+
 function checkGameEnd() {
     if (whiteEnded.length == 15) {
         alert("White Wins!");
@@ -40,7 +42,7 @@ function getColumnsToMove(startIndex) {
         // Piece starts in bottom-right
         if (startIndex >= br_start) {
             if ((startIndex + die1Val) < 24) {
-                validIndices.push(startIndex + die1Val);                
+                validIndices.push(startIndex + die1Val);
             }
             if ((startIndex + die2Val) < 24) {
                 validIndices.push(startIndex + die2Val);
@@ -106,9 +108,9 @@ function validMoveColumns(){
 //                    result.push(i);
 //                }
 //            }else if (moveStep==0){
-//                
+//
 //                    result.push(i);
-//                
+//
 //            }
             if (checker.length>0){
                 if(moveStep == 0) {
@@ -124,17 +126,17 @@ function validMoveColumns(){
                     }
                 }
             }
-            
-                
+
+
         }else if(columns[i].length > 0 && columns[i][0]==1 && !isWhiteTurn){
 //            if(checker.length == 2) {
 //                var checkCol1 = checker[0];
 //                if (columns[checkCol1].length==0||columns[checkCol1][0]==1){
 //                    result.push(i);
 //                }
-//                
+//
 //            }else if (moveStep==0){
-//                
+//
 //                result.push(i);
 //            }
             if (checker.length>0){

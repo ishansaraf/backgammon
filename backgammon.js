@@ -1,3 +1,5 @@
+// @authors: Ishan Saraf, Tianxi He, Xiaoxiao Wang
+
 var canvas;
 var gl;
 var aspectRatio = 1.0;

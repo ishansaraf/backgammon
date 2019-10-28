@@ -1,3 +1,5 @@
+// @authors: Ishan Saraf, Tianxi He, Xiaoxiao Wang
+
 var index = [];
 var verticesTest = [];
 var colors=[];
