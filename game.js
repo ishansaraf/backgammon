@@ -115,17 +115,17 @@ function validMoveColumns(){
             if (checker.length>0){
                 if(moveStep == 0) {
                 var checkCol = checker[0];
-                if (columns[checkCol].length==0||columns[checkCol][0]==0){
+//                if (columns[checkCol].length==0||columns[checkCol][0]==0){
                     result.push(i);
-                }}}
+                }}
             if (checker.length==2){
                 if (moveStep == 1){
                     var checkCol = checker[1];
-                    if (columns[checkCol].length==0||columns[checkCol][0]==0){
+//                    if (columns[checkCol].length==0||columns[checkCol][0]==0){
                         result.push(i);
                     }
                 }
-            }
+            
 
 
         }else if(columns[i].length > 0 && columns[i][0]==1 && !isWhiteTurn){
@@ -142,15 +142,15 @@ function validMoveColumns(){
             if (checker.length>0){
                 if(moveStep == 0) {
                 var checkCol = checker[0];
-                if (columns[checkCol].length==0||columns[checkCol][0]==1){
+//                if (columns[checkCol].length==0||columns[checkCol][0]==1){
                     result.push(i);
-                }}}
+                }}
             if (checker.length==2){
                 if (moveStep == 1){
                     var checkCol = checker[1];
-                    if (columns[checkCol].length==0||columns[checkCol][0]==1){
+//                    if (columns[checkCol].length==0||columns[checkCol][0]==1){
                         result.push(i);
-                    }
+                    
                 }
             }
         }
